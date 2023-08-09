@@ -85,14 +85,40 @@ export default {
             }
         }
     },
-    confirm: async (data) => {
+    update: async (userId, data) => {
+        try {
+           let user = await prisma.users.update({
+            where: {
+                id: Number(userId)
+            },
+            data: {
+                ...data,
+                update_at: new Date(Date.now())
+            }
+           })
+           
+           return {
+                status: true,
+                message: "Update thành công!",
+                data: user
+           }
+        }catch(err) {
+           // console.log("err", err)
+            return {
+                status: false,
+                message: "Lỗi gì đó!"
+            }
+        }
+    },
+    emailConfirm: async (data) => {
         try {
            let user = await prisma.users.update({
             where: {
                 email: data.email
             },
             data: {
-                email_confirm: true
+                email_confirm: true,
+                update_at: new Date(Date.now())
             }
            })
            
@@ -132,26 +158,5 @@ export default {
             }
         }
     },
-    update: async (data) => {
-        try {
-           let user = await prisma.users.update({
-            where: {
-                user_name: data.user_name
-            },
-            data: {
-                password: data.password
-            }
-           })
-           
-           return {
-                status: true,
-                message: "Update thành công!"
-           }
-        }catch(err) {
-            return {
-                status: false,
-                message: "Lỗi gì đó!"
-            }
-        }
-    },
+    userDB: prisma.users
 }

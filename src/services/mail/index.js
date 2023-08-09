@@ -20,6 +20,15 @@ export default {
         }catch (err) {
             return false
         }
+    },
+    sendMailMessage: async function (to, subject, message) {
+        let mailOptions = {
+            to,
+            subject: "Miêu Store thông báo về việc: " + subject,
+            html: message
+        }
+
+        return await this.sendMail(mailOptions);
     }
 }
 
